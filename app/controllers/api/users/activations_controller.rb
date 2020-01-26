@@ -4,7 +4,8 @@ module Api
       def create
         user = User.find_by(id: params[:id])
         user.active!
-        Log.create(text: "User with email #{user.email} has been activated")
+        event = UserActivated.new(data: { user: user })
+        $event_store.publish(event)
         render json: { email: user.email, status: user.status }
       end
     end

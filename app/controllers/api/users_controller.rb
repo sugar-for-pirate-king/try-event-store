@@ -3,7 +3,8 @@ module Api
     def create
       user = User.new(user_params)
       user.save
-      Log.create(text: "User with email #{user.email} has been created")
+      event = UserCreated.new(data: { user: user })
+      $event_store.publish(event)
       render json: { email: user.email }
     end
 
