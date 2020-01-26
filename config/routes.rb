@@ -1,3 +1,9 @@
 Rails.application.routes.draw do
-  # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
+  namespace :api do
+    resources :users, only: %i[create show]
+    
+    scope :users, module: :users do
+      resources :activations
+    end
+  end
 end
